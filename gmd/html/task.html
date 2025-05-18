@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Watch & Earn with GMD</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f7fb;
+      margin: 0;
+      padding: 0;
+    }
+
+    .task-section {
+      padding: 2rem 1rem;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .task-title {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .level-status {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    .task-card {
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      padding: 1rem;
+      margin-bottom: 2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .task-card:hover {
+      transform: scale(1.01);
+    }
+
+    .task-video {
+      width: 100%;
+      height: 200px;
+      border-radius: 1rem;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+
+    .task-comments h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .task-comments ul {
+      list-style-type: none;
+      padding-left: 1rem;
+    }
+
+    .task-comments li {
+      margin-bottom: 0.4rem;
+      font-size: 0.95rem;
+    }
+
+    .earn-button {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.6rem 1rem;
+      background-color: #2d89ef;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    .earn-button[disabled] {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .earnings-display {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .task-video {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<section class="task-section">
+  <h2 class="task-title">🎬 Watch & Earn Tasks</h2>
+  <div class="level-status">
+    NETFLIX  Activated | Task Available: <span id="task-status">Yes</span>
+  </div>
+
+  <div id="task-list">
+    <div class="task-card">
+      <video src="#" controls class="task-video"></video>
+      <div class="task-comments">
+        <h3>Comments</h3>
+        <ul>
+          <li>👍 Great content, very engaging!</li>
+          <li>👎 The audio quality could be better.</li>
+          <li>🔥 Loved the editing style and pace!</li>
+          <li>🤔 It felt a bit too long for the main point.</li>
+        </ul>
+      </div>
+      <button class="earn-button" onclick="completeTask(this)">Mark as Watched</button>
+    </div>
+
+    <div class="task-card">
+      <video src="#" controls class="task-video"></video>
+      <div class="task-comments">
+        <h3>Comments</h3>
+        <ul>
+          <li>🌟 Informative and well-structured.</li>
+          <li>😐 Not really my type of content.</li>
+          <li>✅ Clear message and visuals.</li>
+          <li>❗️Could’ve used subtitles.</li>
+        </ul>
+      </div>
+      <button class="earn-button" onclick="completeTask(this)">Mark as Watched</button>
+    </div>
+
+    <div class="task-card">
+      <video src="#" controls class="task-video"></video>
+      <div class="task-comments">
+        <h3>Comments</h3>
+        <ul>
+          <li>🎥 Very cinematic feel!</li>
+          <li>🚫 Didn’t understand the main point.</li>
+          <li>🎶 Loved the background music.</li>
+          <li>💬 Could use clearer captions.</li>
+        </ul>
+      </div>
+      <button class="earn-button" onclick="completeTask(this)">Mark as Watched</button>
+    </div>
+  </div>
+
+  <div class="earnings-display">
+    🪙 Earnings: $<span id="earnings">0.00</span>
+  </div>
+</section>
+
+<script>
+  let completedTasks = 0;
+  let taskLockedUntil = null;
+  let earnings = 0;
+
+  function completeTask(button) {
+    if (taskLockedUntil && new Date() < taskLockedUntil) {
+      alert("You must wait 24 hours before doing another task.");
+      return;
+    }
+
+    if (button.disabled) return;
+
+    button.disabled = true;
+    button.innerText = "Completed ✅";
+    completedTasks++;
+    earnings += 1.5;
+    document.getElementById("earnings").textContent = earnings.toFixed(2);
+
+    if (completedTasks === 3) {
+      alert("🎉 Task Completed! Come back in 24 hours for the next one.");
+      lockTasksFor24Hours();
+    }
+  }
+
+  function lockTasksFor24Hours() {
+    taskLockedUntil = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    const buttons = document.querySelectorAll(".earn-button");
+    buttons.forEach(btn => btn.disabled = true);
+    document.getElementById("task-status").textContent = "Locked";
+  }
+</script>
+
+</body>
+</html>
